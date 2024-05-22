@@ -78,13 +78,14 @@ class Moto{
             $estadoMoto = "no";
         }
 
-        return "________________________\n" . 
-        "Código: " . $this->getCodigo() . "\n" . 
-        "Precio Costo: $" . $this->getCosto() . "\n" . 
-        "Año de fabricación: " . $this->getAnioFabricacion() . 
-        "\nDescripción: " . $this->getDescripcion() . "\n" . 
-        "Porc. de incremento anual: " . $this->getIncrementoAnual() . "% \n" .
-        "¿Está disponible a la venta?: " . $estadoMoto . "\n";
+        return "\n" . 
+        ">>Código: " . $this->getCodigo() . "\n" . 
+        ">>Precio costo: $" . $this->getCosto() . "\n" . 
+        ">>Precio para la venta: $" . $this->darPrecioVenta() . "\n" . 
+        ">>Año de fabricación: " . $this->getAnioFabricacion() . "\n" .
+        ">>Descripción: " . $this->getDescripcion() . "\n" . 
+        ">>Porc. de incremento anual: " . $this->getIncrementoAnual() . "% \n" .
+        ">>¿Está disponible a la venta?: " . $estadoMoto . "\n";
     }
 
     // Otras funciones

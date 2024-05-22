@@ -32,19 +32,20 @@ class MotoImportada extends Moto{
     // Método __toString
     public function __toString(){
         return parent :: __toString() . 
-        "País importador: " . $this->getPaisImportador() . "\n" . 
-        "Impuesto por ingreso al país: $" . $this->getImpuestoXImport() . "\n"; 
+        ">>País importador: " . $this->getPaisImportador() . "\n" . 
+        ">>Impuesto por ingreso al país: $" . $this->getImpuestoXImport() . "\n" . 
+        "\n"; 
     }
 
     // Otros métodos
     public function darPrecioVenta(){
-        $disponible = $this->getDisponibilidad();
+        // modificarlo porque está mal, hay que llamar al método del parent y añadirle los impuestos si el precio es != -1
+        $precio = parent :: darPrecioVenta();
         $precioVenta = -1;
-        if($disponible == true){
-
-            $precioVenta = $this->getCosto() + $this->getCosto() * ($this->aniosTranscurridos() * ($this->getIncrementoAnual() / 100));
-            $precioVenta = $precioVenta + $this->getImpuestoXImport();
+        if($precio > 0){
+            $precioVenta = $precio + $this->getImpuestoXImport();
         }
+
         return $precioVenta;
     }
 }

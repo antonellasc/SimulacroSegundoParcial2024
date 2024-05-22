@@ -68,8 +68,13 @@ class Cliente{
             $estadoCliente = "no";
         }
 
-        return "\n Nombre: " . $this->getNombre() . "\n" . "Apellido: " . $this->getApellido() . "\n" . "¿Está dado de baja?: " . $estadoCliente . "\n" . 
-        "Tipo documento: " . $this->getTipoDoc() . "\n" . "Número de documento: " . $this->getNroDoc() . "\n —————————————————————————— \n";
+        return "\n" . 
+        ">>Nombre: " . $this->getNombre() . "\n" .
+        ">>Apellido: " . $this->getApellido() . "\n" .
+        ">>¿Está dado de baja?: " . $estadoCliente . "\n" . 
+        ">>Tipo documento: " . $this->getTipoDoc() . "\n" .
+        ">>Número de documento: " . $this->getNroDoc() . "\n" . 
+        "\n";
         
     }
 

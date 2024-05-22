@@ -6,7 +6,7 @@ class MotoNacional extends Moto{
     // Constructor
     public function __construct($codigo, $costo, $anio_fabricacion, $descripcion, $porcentajeInc, $disponibilidad, $porc_descuento){
         parent :: __construct($codigo, $costo, $anio_fabricacion, $descripcion, $porcentajeInc, $disponibilidad);
-            $this->porcentajeDescuento = $porc_descuento;        
+            $this->porcentajeDescuento = $porc_descuento ?? 15;        
     }
 
     // Método de acceso : get
@@ -22,19 +22,18 @@ class MotoNacional extends Moto{
     // Método __toString
     public function __toString(){
         return parent :: __toString() . 
-        "Porcentaje de descuento para la venta: " . $this->getPorcentajeDescuento() . "% \n";
+        ">>Porcentaje de descuento para la venta: " . $this->getPorcentajeDescuento() . "% \n" . 
+        "\n";
     }
 
     // Otros métodos
     public function darPrecioVenta(){
+        $precio = parent :: darPrecioVenta();
+        $precioFinal = -1;
         $valorDescuento = $this->getCosto() * ($this->getPorcentajeDescuento() / 100);
-        $disponible = $this->getDisponibilidad();
-        $precioVenta = -1;
-        if($disponible == true){
-
-            $precioVenta = $this->getCosto() + $this->getCosto() * ($this->aniosTranscurridos() * ($this->getIncrementoAnual() / 100));
-            $precioVenta = $precioVenta - $valorDescuento;
+        if($precio > 0){
+            $precioFinal = $precio - $valorDescuento;
         }
-        return $precioVenta;
+        return $precioFinal;
     }
 }

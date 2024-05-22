@@ -60,8 +60,13 @@ class Venta{
 
     // Método to string
     public function __toString(){
-        return "————————————————————————" . "\n Venta número " . $this->getNumeroVenta() . ": \n" . "Fecha: " . $this->getFechaVenta() . "\n" . "Cliente: " . $this->getObjCliente() . 
-        "Motos vendidas: " . $this->mostrarArrayMotos() . "\n" . "Precio final de la venta: $" . $this->getPrecioFinal() . "\n —————————————————————————"; 
+        return "\n" . 
+        ">>Venta número " . $this->getNumeroVenta() . ": \n" .
+        ">>Fecha: " . $this->getFechaVenta() . "\n" . 
+        ">>Cliente: \n" . $this->getObjCliente() . 
+        ">>Motos vendidas: " . $this->mostrarArrayMotos() . "\n" . 
+        ">>Precio final de la venta: $" . $this->getPrecioFinal() . "\n" . 
+        "\n"; 
         
     }
 
@@ -72,7 +77,7 @@ class Venta{
         // El método cada vez que incorpora una moto a la venta, debe actualizar la variable instancia precio final de la venta.
         // Utilizar el método que calcula el precio de venta de la moto donde crea necesario.
         $motosVendidas = $this->getArrayMoto();
-        $estaDisp = $objMoto->getDisponibilidad();
+        $estaDisp = $objMoto->getDisponibilidad(); //evaluamos la disponibilidad de la moto
         $precioActualVtas = $this->getPrecioFinal();
         $precioUnMoto = $objMoto->darPrecioVenta();
         $precio_Final = 0;
@@ -93,6 +98,7 @@ class Venta{
         $coleccionMotos = $this->getArrayMoto();
         $colMotoNacional = [];
         foreach($coleccionMotos as $moto){
+            // instanceof también puede reemplazarse por is_a o class name
             if($moto instanceof MotoNacional === true)
             $colMotoNacional[] = $moto;
         }
@@ -110,7 +116,8 @@ class Venta{
         // retorna una colección de motos importadas vinculadas a la venta. 
         // Si la venta solo se corresponde con motos Nacionales la colección 
         // retornada debe ser vacía
-        $coleccionMotosImp = null;
+        $coleccionMotosImp = [];
+        // tendía que ser array [] vacío, nulo NO
         $coleccionMotos = $this->getArrayMoto();
         foreach($coleccionMotos as $motoImp){
             if($motoImp instanceof MotoImportada === true){

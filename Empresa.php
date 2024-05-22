@@ -60,19 +60,30 @@ class Empresa{
 
     // Método to string
     public function __toString(){
-        return "————————————————————————" . "\n Denominación: " . $this->getDenominacion() . "\n" . "Domicilio: " . $this->getDireccion() . "\n" . "Clientes: \n" . $this->mostrarClientes() . "\n" . 
-        "Motos: \n" . $this->mostrarMotos() . "\n" . "Ventas: " . $this->mostrarVentas() . "\n";
+        return "\n" . 
+        ">>Denominación: " . $this->getDenominacion() . "\n" . 
+        ">>Domicilio: " . $this->getDireccion() . "\n" . 
+        ">Clientes: \n" . $this->mostrarClientes() . "\n" . 
+        ">>Motos: \n" . $this->mostrarMotos() . "\n" . 
+        ">>Ventas: " . $this->mostrarVentas() . "\n";
     }
 
     // Funciones solicitadas por el enunciado
     public function retornarMoto($codigoMoto){
         // 5. Implementar el método retornarMoto($codigoMoto) que recorre la colección de motos de la Empresa y retorna la referencia al objeto moto
         //  cuyo código coincide con el recibido por parámetro.
+        // obs: usar un while con el codigo de moto + una bandera 
         $coleccionMotos = $this->getArrayMotos();
         $motoRet = null;
-        foreach($coleccionMotos as $moto){
-            if($moto->getCodigo() === $codigoMoto){
-                $motoRet = $moto;
+        $encontrada = false;
+        $i = 0;
+        while($i < count($coleccionMotos) && !$encontrada){
+            $unaMoto = $coleccionMotos[$i];
+            if($unaMoto->getCodigo() === $codigoMoto){
+                $motoRet = $unaMoto;
+                $encontrada = true;
+            }else{
+                $i++;
             }
         }
         return $motoRet;
@@ -89,10 +100,8 @@ class Empresa{
         $colecVentas = $this->getArrayVentas();
         $ventaNro = count($colecVentas) + 1;
         $fechaVenta = date("d/m/y");
-        $precioMoto = 0;
         $precioFinal = 0;
-        $colecMotosVendidas = [];
-        $motoDisponible = false; 
+        $colecMotosVendidas = []; 
         $puedeComprar = $objCliente->getEstadoCliente();
         $i = 0;
 
@@ -101,17 +110,10 @@ class Empresa{
             $objVenta = new Venta($ventaNro, $fechaVenta, $objCliente, $colecVentas, $precioFinal);
             while($i < count($colCodigosMoto)){
                 $objMoto = $this->retornarMoto($colCodigosMoto[$i]);
-                if($objMoto !== null){
-                $motoDisponible = $objMoto->getDisponibilidad();
-                $precioMoto = $objMoto->darPrecioVenta();
+                if($objMoto !== null && $objMoto->getDisponibilidad() === true){
                 $objVenta->incorporarMoto($objMoto);
                 $precioFinal = $objVenta->getPrecioFinal();
                 $colecMotosVendidas[] = $objMoto;
-
-                // if ($motoDisponible == true){
-                //     $precioFinal = $precioFinal + $precioMoto;
-                //     $colecMotosVendidas[] = $objMoto;
-                // }
             }
                 $i++;
         }
@@ -129,18 +131,21 @@ class Empresa{
         // número de documento de un Cliente y retorna una colección con las ventas realizadas al cliente
         $unCliente = null;
         $ventasUnCliente = [];
+        $colVentas = $this->getArrayVentas();
         $colClientes = $this->getArrayClientes();
-        foreach($colClientes as $cliente){
-            if($cliente->getTipoDoc() === $tipo && $cliente->getNroDoc() === $nroDoc){
-                $unCliente = $cliente;
-            }
-        }
-        if($unCliente !== null){
-            $colDeVentas = $this->getArrayVentas();
-            foreach($colDeVentas as $venta){
-                if($venta->getObjCliente() === $unCliente){
-                    $ventasUnCliente[] = $venta;
+        $encontrado = false;
+        $i = 0;
+        while($i < count($colClientes) && !$encontrado){
+            $unCliente = $colClientes[$i];
+            if(($unCliente->getTipoDoc() === $tipo) && ($unCliente->getNroDoc() === $nroDoc)){
+                $encontrado = true;
+                foreach($colVentas as $venta){
+                    if($venta->getObjCliente() === $unCliente){
+                        $ventasUnCliente[] = $venta;
+                    }
                 }
+            }else{
+                $i++;
             }
         }
         return $ventasUnCliente;
@@ -184,6 +189,17 @@ class Empresa{
         return $cadenaVentas;
     }
 
+    public function mostrarCol($array){
+        $n = 0;
+        $cadena = "";
+        for($i = 0; $i < count($array); $i++){
+            $n++;
+            $unaVenta = $array[$i];
+            $cadena = $cadena . $n . ": \n" . $unaVenta . "\n";
+        }
+        return $cadena;
+    }
+
     // Métodos del 2do simulacro
     public function informarSumaVentasNacionales(){
         //recorre la colección de ventas realizadas por la empresa y retorna
@@ -205,10 +221,11 @@ class Empresa{
         $coleccionVentasImportadas = [];
         $coleccionVentas = $this->getArrayVentas();
         foreach($coleccionVentas as $venta){
-            if($venta->retornarMotosImportadas() !== null){
-                $coleccionVentasImportadas[] = $venta->retornarMotosImportadas();
+            $coleccionVentasImportadas = $venta->retornarMotosImportadas();
+            if (count($coleccionVentasImportadas) > 0){
+                $coleccionVentasImportadas[] = $venta;
             }
+            }
+            return $coleccionVentasImportadas;
         }
-        return $coleccionVentasImportadas;
-    }
 }
